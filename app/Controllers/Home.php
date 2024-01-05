@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controllers;
-
+use CodeIgniter\Controller;
 class Home extends BaseController
 {
     
@@ -121,5 +121,61 @@ public function verLibro(){
     }
 }  
   
+
+
+
+
+
+    public function test()
+    {
+        // Cargamos la clase de la base de datos
+        $db = \Config\Database::connect();
+
+        // Verificamos si la conexión es exitosa
+        if ($db->connect())
+        {
+            echo 'Conexión exitosa';
+        }
+        else
+        {
+            echo 'No se pudo conectar a la base de datos';
+        }
+    }
     
+
+    public function insertarPersona()
+    {
+        $persona3 = array(
+            'Id' => '03',
+            'Nombre' => 'Juan Pérez',
+            'Edad' => 40,
+            'Ciudad' => 'Guayaquil',
+            'Ocupacion' => 'Empresario',
+            'Contacto' => array(
+                'Email' => 'jperez@example.com',
+                'Telefono' => '555-123-4567'
+            )
+        );
+
+        // Extraer datos de contacto
+        $email = $persona3['Contacto']['Email'];
+        $telefono = $persona3['Contacto']['Telefono'];
+
+        // Acceder a la base de datos
+        $db = \Config\Database::connect();
+
+        // Insertar persona en la base de datos
+        $db->table('Persona')->insert([
+            'Id' => $persona3['Id'],
+            'Nombre' => $persona3['Nombre'],
+            'Edad' => $persona3['Edad'],
+            'Ciudad' => $persona3['Ciudad'],
+            'Ocupacion' => $persona3['Ocupacion'],
+            'Email' => $email,
+            'Telefono' => $telefono,
+        ]);
+
+        return $this->response->setJSON(['message' => 'Persona insertada correctamente']);
+    }
+
 }
